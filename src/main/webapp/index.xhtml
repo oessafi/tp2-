@@ -42,39 +42,6 @@
                         </h:panelGroup>
                         <h:inputTextarea id="reponse" value="#{bb.reponse}" title="Réponse"
                                          cols="50" rows="15" readonly="true"/>
-
-                        <!-- Bouton mode debug -->
-                        <h:commandButton id="debugbutton"
-                                         value="#{bb.debug ? 'Mode Normal' : 'Mode Debug'}"
-                                         action="#{bb.toggleDebug()}"/>
-                    </h:panelGrid>
-
-                    <!-- Panel debug (affiché uniquement en mode debug) -->
-                    <h:panelGrid id="debug" columns="1" rendered="#{bb.debug}">
-                        <!-- NOUVEAU : Informations système -->
-                        <h:panelGroup>
-                            <h:outputText value="Informations système :" style="font-weight: bold; color: #0066cc;"/>
-                        </h:panelGroup>
-                        <h:panelGrid columns="2" border="1" cellpadding="5" style="margin-bottom: 15px;">
-                            <h:outputText value="Encodage requête : "/>
-                            <h:outputText value="#{bb.encodageActuel}" style="font-weight: bold;"/>
-                            <h:outputText value="Filtre UTF-8 : "/>
-                            <h:outputText value="Actif ✓" style="color: green; font-weight: bold;"/>
-                        </h:panelGrid>
-
-                        <h:panelGroup>
-                            <h:outputText value="JSON de la requête :"/>
-                            <button type="button" onclick="copyToClipboard('requetejson')">Copier</button>
-                        </h:panelGroup>
-                        <h:inputTextarea id="requetejson" value="#{bb.texteRequeteJson}"
-                                         title="JSON requête" cols="50" rows="15" readonly="true"/>
-
-                        <h:panelGroup>
-                            <h:outputText value="JSON de la réponse :"/>
-                            <button type="button" onclick="copyToClipboard('reponsejson')">Copier</button>
-                        </h:panelGroup>
-                        <h:inputTextarea id="reponsejson" value="#{bb.texteReponseJson}"
-                                         title="JSON réponse" cols="50" rows="15" readonly="true"/>
                     </h:panelGrid>
                 </h:panelGrid>
 

@@ -1,6 +1,5 @@
 package com.omaressafi.tp1_omar_essafi;
 
-import com.omaressafi.tp1_omar_essafi.LlmClient;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;

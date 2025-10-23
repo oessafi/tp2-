@@ -18,7 +18,7 @@ public class LlmClient {
         String cle = System.getenv("GEMINI_KEY");
 
         // Création du modèle
-        ChatLanguageModel model = GoogleAiGeminiChatModel.builder()  // ← CHANGÉ
+        ChatLanguageModel model = GoogleAiGeminiChatModel.builder()
                 .apiKey(cle)
                 .modelName("gemini-2.0-flash-exp")
                 .temperature(0.7)
@@ -29,7 +29,7 @@ public class LlmClient {
 
         // Création de l'assistant
         this.assistant = AiServices.builder(Assistant.class)
-                .chatLanguageModel(model)  // ← CHANGÉ
+                .chatLanguageModel(model)
                 .chatMemory(chatMemory)
                 .build();
     }
