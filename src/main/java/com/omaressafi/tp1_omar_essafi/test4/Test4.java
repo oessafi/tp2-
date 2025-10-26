@@ -2,10 +2,13 @@ package com.omaressafi.tp1_omar_essafi.test4;
 
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.loader.FileSystemDocumentLoader;
+import dev.langchain4j.data.document.splitter.DocumentSplitters;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
-import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.chat.ChatModel;
+import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.model.googleai.GoogleAiGeminiChatModel;
+import dev.langchain4j.model.googleai.GoogleAiEmbeddingModel;
 import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
 import dev.langchain4j.service.AiServices;
 import dev.langchain4j.store.embedding.EmbeddingStore;
@@ -26,10 +29,16 @@ public class Test4 {
         String llmKey = System.getenv("GEMINI_KEY");
 
         // Modèle de chat
-        ChatLanguageModel modele = GoogleAiGeminiChatModel.builder()
+        ChatModel modele = GoogleAiGeminiChatModel.builder()
                 .apiKey(llmKey)
                 .modelName("gemini-2.0-flash-exp")
                 .temperature(0.3)
+                .build();
+
+        // Modèle d'embeddings
+        EmbeddingModel embeddingModel = GoogleAiEmbeddingModel.builder()
+                .apiKey(llmKey)
+                .modelName("text-embedding-004")
                 .build();
 
         // Chargement du document
@@ -39,13 +48,24 @@ public class Test4 {
         EmbeddingStore<TextSegment> embeddingStore = new InMemoryEmbeddingStore<>();
 
         // Calcule les embeddings et les enregistre dans la base vectorielle
-        EmbeddingStoreIngestor.ingest(document, embeddingStore);
+        EmbeddingStoreIngestor ingestor = EmbeddingStoreIngestor.builder()
+                .embeddingStore(embeddingStore)
+                .embeddingModel(embeddingModel)
+                .documentSplitter(DocumentSplitters.recursive(300, 0))
+                .build();
+
+        ingestor.ingest(document);
 
         // Création de l'assistant conversationnel avec mémoire et RAG
         Assistant assistant = AiServices.builder(Assistant.class)
-                .chatLanguageModel(modele)  // ← CHANGÉ ICI aussi
+                .chatModel(modele)
                 .chatMemory(MessageWindowChatMemory.withMaxMessages(10))
-                .contentRetriever(EmbeddingStoreContentRetriever.from(embeddingStore))
+                .contentRetriever(EmbeddingStoreContentRetriever.builder()
+                        .embeddingStore(embeddingStore)
+                        .embeddingModel(embeddingModel)
+                        .maxResults(3)
+                        .minScore(0.6)
+                        .build())
                 .build();
 
         // Question
