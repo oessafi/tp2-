@@ -11,10 +11,10 @@ public class Test1 {
 
         // Création du modèle
         ChatModel modele = GoogleAiGeminiChatModel.builder()
-                .apiKey(cle)
-                .modelName("gemini-2.0-flash-exp")
-                .temperature(0.7)
-                .build();
+                .apiKey(cle) // [cite: 224]
+                .modelName("gemini-2.5-flash") // [cite: 225] Nom du modèle comme dans le cours
+                .temperature(0.7) // Température demandée par le TP
+                .build(); // [cite: 226]
 
         // Pose une question au modèle
         String reponse = modele.chat("Quelle est la capitale de la France ?");

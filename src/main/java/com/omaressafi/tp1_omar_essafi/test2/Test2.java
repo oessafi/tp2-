@@ -12,10 +12,10 @@ public class Test2 {
         String cle = System.getenv("GEMINI_KEY");
 
         ChatModel modele = GoogleAiGeminiChatModel.builder()
-                .apiKey(cle)
-                .modelName("gemini-2.0-flash-exp")
+                .apiKey(cle) // [cite: 224]
+                .modelName("gemini-2.5-flash") //
                 .temperature(0.7)
-                .build();
+                .build(); // [cite: 226]
 
         // Création du template
         PromptTemplate template = PromptTemplate.from(
